@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Etch-a-Sketch</title>
+</head>
+<body>
+
+</body>
+
+<script>
+
+// Create Grid with id="container"
+var containerCreate = document.createElement("div")
+containerCreate.id = "container";
+containerCreate.className = "container";
+containerCreate.setAttribute("style", "border: 1px solid black; display: flex; flex-wrap: wrap; margin: 0 auto; width: 800px; height: 800px")
+document.body.appendChild(containerCreate);
+
+//Select the container div 
+//note to self: this only needs to get called once as the container is never deleted, while the querySelectorAll in hoverAction() needs to be redeclared(nested) as all existing divs (that had been selected initially) were removed during reset.
+var gridContainer = document.getElementById("container");
+
+//Grid Function
+function generateGrid(gridCount) {
+    for (i = 0; i < (gridCount ** 2); i++){
+        var gridCreate = document.createElement("div");
+        var gridFlex = 800 / gridCount + "px";
+        gridCreate.className = "innerGrid";
+        gridCreate.setAttribute("style", "border: 1px solid grey; box-sizing: border-box; flex-grow: 1");
+        gridCreate.style.flexBasis = gridFlex;
+        gridContainer.appendChild(gridCreate);
+    }
+}
+
+// Mouseover function
+function hoverAction() {
+    var hoverItem = document.querySelectorAll("div.innerGrid");
+    hoverItem.forEach((grid) => {
+        grid.addEventListener("mouseenter", () => {
+            grid.style.backgroundColor = "grey";
+        });
+    });
+}
+
+//Default grid on load
+var gridCount = 16;
+generateGrid(gridCount);
+hoverAction();
+
+
+// Reset button
+var resetButton = document.createElement("button");
+resetButton.setAttribute("style", "margin: 0 auto; padding: 1rem 2rem");
+resetButton.appendChild(document.createTextNode("Reset"));
+
+document.body.insertBefore(resetButton, containerCreate);
+
+resetButton.addEventListener("click", () => {
+    while (container.lastChild){
+        container.removeChild(container.lastChild);
+    }
+    var input = prompt("Please specify how many squares per side for new grid");
+    var gridCount = input;
+    generateGrid(input);
+    hoverAction();
+});
+
+</script>
+</html>
